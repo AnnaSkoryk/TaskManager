@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>Task Manager</h1>
+
+      <!-- Add Task Button -->
+      <button id="addBtn">Add Task</button>
+
+      <!-- Filter Buttons -->
+      <div class="filters">
+        <button id="allBtn">All</button>
+        <button id="activeBtn">Active</button>
+        <button id="completedBtn">Completed</button>
+      </div>
+
+      <!-- Task List -->
+      <ul id="taskList"></ul>
+
+    </div>
+
+    <!-- PopUp Modal -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>New Task</h2>
+
+        <!-- Title -->
+        <label for="taskTitle">Title</label>
+        <input 
+          type="text" 
+          id="taskTitle" 
+          placeholder="Enter task title..." 
+        />
+
+        <!-- Description -->
+        <label for="taskDescription">Description</label>
+        <textarea 
+          id="taskDescription" 
+          placeholder="Enter task description..."
+          rows="3"
+        ></textarea>
+
+        <!-- Due Date -->
+        <label for="taskDueDate">Due Date</label>
+        <input 
+          type="date" 
+          id="taskDueDate" 
+        />
+
+        <!-- Priority -->
+        <label for="taskPriority">Priority</label>
+        <select id="taskPriority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        <!-- Modal Buttons -->
+        <div class="modal-buttons">
+          <button id="saveBtn">Save Task</button>
+          <button id="cancelBtn">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message hidden" role="status" aria-live="polite">
+      Task added successfully!
+    </div>
+
+    <script type="module" src="dist/index.js"></script>
+  </body>
+</html>
