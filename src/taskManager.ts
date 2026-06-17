@@ -1,31 +1,33 @@
 import type { Task } from "./task.js";
-let tasks: Task[] = [];
+const localStorageKey = "tasks";
 
 export function addTask(task: Task): void {
+    const tasks = getAllTasks(); 
     tasks.push(task);
+    localStorage.setItem(localStorageKey, JSON.stringify(tasks));
 }
 
 export function removeTask(id: number): void {
-    tasks.forEach(t => {
-        console.log(t.id);
-        if(t.id === id){
-            tasks.splice(tasks.indexOf(t), 1);
-        }
-    });
+    const tasks = getAllTasks().filter(t => t.id !== id);
+    localStorage.setItem(localStorageKey, JSON.stringify(tasks));
 }
 
 export function filterTasks(isCompleted: boolean = true): Task[] {
+    const tasks = getAllTasks(); 
     return tasks.filter(t => t.completed == isCompleted);
 }
 
-
 export function getAllTasks(): Task[] {
-    return tasks;
+    const stored = localStorage.getItem(localStorageKey);
+    console.log(stored?.length);
+    return stored ? JSON.parse(stored) : [];
 }
 
 export function setTaskCompleted(id: number, completed: boolean): void {
+    const tasks = getAllTasks(); 
     const task = tasks.find(t => t.id === id);
     if (task) {
         task.completed = completed;
+        localStorage.setItem(localStorageKey, JSON.stringify(tasks));
     }
 }

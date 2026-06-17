@@ -59,6 +59,12 @@ if (saveBtn) {
     });
 }
 function formatDueDate(date) {
+    if (typeof date === "string") {
+        date = new Date(date);
+    }
+    if (date === null) {
+        return "No due date";
+    }
     if (isNaN(date.getTime())) {
         return "No due date";
     }
@@ -99,6 +105,9 @@ function createTaskElement(task) {
     const dueDate = document.createElement("span");
     dueDate.className = "task-date";
     dueDate.textContent = `Due: ${formatDueDate(task.dueDate)}`;
+    if (task.dueDate == null) {
+        dueDate.style.color = "#991b1b";
+    }
     const priority = document.createElement("span");
     priority.className = `priority-badge priority-${task.priority}`;
     priority.textContent = task.priority;
@@ -111,13 +120,17 @@ function createTaskElement(task) {
     removeBtn.type = "button";
     removeBtn.className = "btn-delete";
     removeBtn.textContent = "Remove";
+    //removeBtn.addEventListener("click", () => {
+    //    const task = document.querySelector("li");
+    //    if(task){
+    //        console.log(task);
+    //        removeTask(Number(task.getAttribute("id")));
+    //        renderTasks();
+    //   }
+    //});
     removeBtn.addEventListener("click", () => {
-        const task = document.querySelector("li");
-        if (task) {
-            console.log(task);
-            removeTask(Number(task.getAttribute("id")));
-            renderTasks();
-        }
+        removeTask(task.id);
+        renderTasks();
     });
     actions.append(removeBtn);
     li.append(info, actions, completeLabel);

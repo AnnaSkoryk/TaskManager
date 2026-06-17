@@ -70,7 +70,13 @@ if (saveBtn) {
     });
 }
 
-function formatDueDate(date: Date): string {
+function formatDueDate(date: Date | string | null): string {
+    if (typeof date === "string") {
+        date = new Date(date);
+    }
+    if (date === null) {
+        return "No due date";
+    }
     if (isNaN(date.getTime())) {
         return "No due date";
     }
@@ -82,6 +88,7 @@ function formatDueDate(date: Date): string {
 }
 
 function createTaskElement(task: Task): HTMLLIElement {
+    
     const li = document.createElement("li");
     li.setAttribute("id", task.id.toString());
     if (task.completed) {
@@ -121,6 +128,9 @@ function createTaskElement(task: Task): HTMLLIElement {
     const dueDate = document.createElement("span");
     dueDate.className = "task-date";
     dueDate.textContent = `Due: ${formatDueDate(task.dueDate)}`;
+    if(task.dueDate == null){
+        dueDate.style.color = "#991b1b";
+    }
 
     const priority = document.createElement("span");
     priority.className = `priority-badge priority-${task.priority}`;
@@ -137,15 +147,18 @@ function createTaskElement(task: Task): HTMLLIElement {
     removeBtn.type = "button";
     removeBtn.className = "btn-delete";
     removeBtn.textContent = "Remove";
+    //removeBtn.addEventListener("click", () => {
+    //    const task = document.querySelector("li");
+    //    if(task){
+    //        console.log(task);
+    //        removeTask(Number(task.getAttribute("id")));
+    //        renderTasks();
+    //   }
+    //});
     removeBtn.addEventListener("click", () => {
-        const task = document.querySelector("li");
-        if(task){
-            console.log(task);
-            removeTask(Number(task.getAttribute("id")));
-            renderTasks();
-        }
+        removeTask(task.id);
+        renderTasks();
     });
-
     actions.append(removeBtn);
     li.append(info, actions, completeLabel);
     return li;
