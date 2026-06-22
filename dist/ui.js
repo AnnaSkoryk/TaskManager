@@ -1,4 +1,4 @@
-import { addTask, removeTask, getAllTasks, setTaskCompleted, filterTasks } from "./taskManager.js";
+import * as taskManager from "./taskManager.js";
 const modal = document.getElementById("modal");
 const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
@@ -24,31 +24,31 @@ if (allBtn) {
         renderTasks();
     });
 }
-if (activeBtn) {
-    activeBtn.addEventListener("click", () => {
-        renderTasks(filterTasks(false));
-    });
-}
-if (completedBtn) {
-    completedBtn.addEventListener("click", () => {
-        renderTasks(filterTasks(true));
-    });
-}
+//if(activeBtn){
+//    activeBtn.addEventListener("click", () => {
+//        renderTasks(filterTasks(false));
+//    });
+//}
+//if(completedBtn){
+//    completedBtn.addEventListener("click", () => {
+//        renderTasks(filterTasks(true));
+//    });
+//}
 if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", async () => {
         const titleInput = document.getElementById("taskTitle");
         const descriptionInput = document.getElementById("taskDescription");
         const dueDateInput = document.getElementById("taskDueDate");
         const priorityInput = document.getElementById("taskPriority");
         const newTask = {
-            id: getAllTasks().length,
+            id: (await taskManager.getAllTasks()).length,
             title: titleInput.value,
             description: descriptionInput.value,
             dueDate: new Date(dueDateInput.value),
             priority: priorityInput.value,
             completed: false
         };
-        addTask(newTask);
+        taskManager.addTask(newTask);
         modal?.classList.add("hidden");
         titleInput.value = "";
         descriptionInput.value = "";
@@ -62,7 +62,7 @@ function formatDueDate(date) {
     if (typeof date === "string") {
         date = new Date(date);
     }
-    if (date === null) {
+    if (date === null || date === undefined) {
         return "No due date";
     }
     if (isNaN(date.getTime())) {
@@ -86,7 +86,7 @@ function createTaskElement(task) {
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
     checkbox.addEventListener("change", () => {
-        setTaskCompleted(task.id, checkbox.checked);
+        // setTaskCompleted(task.id, checkbox.checked);
         li.classList.toggle("completed", checkbox.checked);
     });
     const completeText = document.createElement("span");
@@ -129,25 +129,26 @@ function createTaskElement(task) {
     //   }
     //});
     removeBtn.addEventListener("click", () => {
-        removeTask(task.id);
+        //removeTask(task.id);
+        taskManager.deleteTask(task.id);
         renderTasks();
     });
     actions.append(removeBtn);
     li.append(info, actions, completeLabel);
     return li;
 }
-function renderTasks(tasks = getAllTasks()) {
+async function renderTasks(tasks = taskManager.getAllTasks()) {
     if (!taskList)
         return;
     taskList.replaceChildren();
-    if (tasks.length === 0) {
+    if ((await tasks).length === 0) {
         const emptyState = document.createElement("li");
         emptyState.className = "empty-state";
         emptyState.textContent = "No tasks yet. Add one to get started!";
         taskList.append(emptyState);
         return;
     }
-    for (const task of tasks) {
+    for (const task of await tasks) {
         taskList.append(createTaskElement(task));
     }
 }

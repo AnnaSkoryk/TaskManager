@@ -1,4 +1,4 @@
-import { addTask, removeTask, getAllTasks, setTaskCompleted, filterTasks } from "./taskManager.js";
+import * as taskManager from "./taskManager.js";
 import type { Task } from "./task.js";
 
 const modal = document.getElementById("modal");
@@ -31,27 +31,27 @@ if(allBtn) {
     });
 }
 
-if(activeBtn){
-    activeBtn.addEventListener("click", () => {
-        renderTasks(filterTasks(false));
-    });
-}
+//if(activeBtn){
+//    activeBtn.addEventListener("click", () => {
+//        renderTasks(filterTasks(false));
+//    });
+//}
 
-if(completedBtn){
-    completedBtn.addEventListener("click", () => {
-        renderTasks(filterTasks(true));
-    });
-}
+//if(completedBtn){
+//    completedBtn.addEventListener("click", () => {
+//        renderTasks(filterTasks(true));
+//    });
+//}
 
 if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
+    saveBtn.addEventListener("click", async () => {
         const titleInput = document.getElementById("taskTitle") as HTMLInputElement;
         const descriptionInput = document.getElementById("taskDescription") as HTMLInputElement;
         const dueDateInput = document.getElementById("taskDueDate") as HTMLInputElement;
         const priorityInput = document.getElementById("taskPriority") as HTMLSelectElement;
 
         const newTask = {
-            id: getAllTasks().length,
+            id: (await taskManager.getAllTasks()).length,
             title: titleInput.value,
             description: descriptionInput.value,
             dueDate: new Date(dueDateInput.value),
@@ -59,7 +59,7 @@ if (saveBtn) {
             completed: false
         };
 
-        addTask(newTask);
+        taskManager.addTask(newTask);
         modal?.classList.add("hidden");
         titleInput.value = "";
         descriptionInput.value = "";
@@ -74,7 +74,7 @@ function formatDueDate(date: Date | string | null): string {
     if (typeof date === "string") {
         date = new Date(date);
     }
-    if (date === null) {
+    if (date === null || date === undefined) {
         return "No due date";
     }
     if (isNaN(date.getTime())) {
@@ -87,8 +87,7 @@ function formatDueDate(date: Date | string | null): string {
     });
 }
 
-function createTaskElement(task: Task): HTMLLIElement {
-    
+function createTaskElement(task: Task): HTMLLIElement {   
     const li = document.createElement("li");
     li.setAttribute("id", task.id.toString());
     if (task.completed) {
@@ -102,7 +101,7 @@ function createTaskElement(task: Task): HTMLLIElement {
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
     checkbox.addEventListener("change", () => {
-        setTaskCompleted(task.id, checkbox.checked);
+        // setTaskCompleted(task.id, checkbox.checked);
         li.classList.toggle("completed", checkbox.checked);
     });
 
@@ -156,7 +155,8 @@ function createTaskElement(task: Task): HTMLLIElement {
     //   }
     //});
     removeBtn.addEventListener("click", () => {
-        removeTask(task.id);
+        //removeTask(task.id);
+        taskManager.deleteTask(task.id);
         renderTasks();
     });
     actions.append(removeBtn);
@@ -164,18 +164,18 @@ function createTaskElement(task: Task): HTMLLIElement {
     return li;
 }
 
-function renderTasks(tasks: Task[] = getAllTasks()): void { 
+async function renderTasks(tasks: Promise<Task[]> = taskManager.getAllTasks()): Promise<void> { 
     if (!taskList) return;
     taskList.replaceChildren();
 
-    if (tasks.length === 0) {
+    if ((await tasks).length === 0) {
         const emptyState = document.createElement("li");
         emptyState.className = "empty-state";
         emptyState.textContent = "No tasks yet. Add one to get started!";
         taskList.append(emptyState);
         return;
     }
-    for (const task of tasks) {
+    for (const task of await tasks) {
         taskList.append(createTaskElement(task));
     }
 }

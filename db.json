@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Learn TypeScript"
+    },
+    {
+      "id": "2",
+      "title": "Build app"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
