@@ -13,6 +13,8 @@ const completedBtn = document.getElementById("completedBtn");
 
 let successTimeout: ReturnType<typeof setTimeout> | undefined;
 
+renderTasks();
+
 if (addBtn) {
     addBtn.addEventListener("click", () => {
         modal?.classList.remove("hidden");
@@ -25,23 +27,23 @@ if (cancelBtn) {
     });
 }
 
-if(allBtn) {
+if (allBtn) {
     allBtn.addEventListener("click", () => {
-    renderTasks();
+        renderTasks();
     });
 }
 
-//if(activeBtn){
-//    activeBtn.addEventListener("click", () => {
-//        renderTasks(filterTasks(false));
-//    });
-//}
+if(activeBtn){
+    activeBtn.addEventListener("click", () => {
+        renderTasks(taskManager.filterTasks(false));
+    });
+}
 
-//if(completedBtn){
-//    completedBtn.addEventListener("click", () => {
-//        renderTasks(filterTasks(true));
-//    });
-//}
+if(completedBtn){
+    completedBtn.addEventListener("click", () => {
+        renderTasks(taskManager.filterTasks(true));
+    });
+}
 
 if (saveBtn) {
     saveBtn.addEventListener("click", async () => {
@@ -87,7 +89,7 @@ function formatDueDate(date: Date | string | null): string {
     });
 }
 
-function createTaskElement(task: Task): HTMLLIElement {   
+function createTaskElement(task: Task): HTMLLIElement {
     const li = document.createElement("li");
     li.setAttribute("id", task.id.toString());
     if (task.completed) {
@@ -127,7 +129,7 @@ function createTaskElement(task: Task): HTMLLIElement {
     const dueDate = document.createElement("span");
     dueDate.className = "task-date";
     dueDate.textContent = `Due: ${formatDueDate(task.dueDate)}`;
-    if(task.dueDate == null){
+    if (task.dueDate == null) {
         dueDate.style.color = "#991b1b";
     }
 
@@ -164,22 +166,21 @@ function createTaskElement(task: Task): HTMLLIElement {
     return li;
 }
 
-async function renderTasks(tasks: Promise<Task[]> = taskManager.getAllTasks()): Promise<void> { 
+function renderTasks(tasks: Task[] = taskManager.getAllTasks()): void {
     if (!taskList) return;
     taskList.replaceChildren();
 
-    if ((await tasks).length === 0) {
+    if ((tasks).length === 0) {
         const emptyState = document.createElement("li");
         emptyState.className = "empty-state";
         emptyState.textContent = "No tasks yet. Add one to get started!";
         taskList.append(emptyState);
         return;
     }
-    for (const task of await tasks) {
+    for (const task of tasks) {
         taskList.append(createTaskElement(task));
     }
 }
-
 
 function showSuccessMessage(): void {
     if (!successMessage) return;
@@ -189,5 +190,3 @@ function showSuccessMessage(): void {
         successMessage.classList.add("hidden");
     }, 2000);
 }
-
-renderTasks();

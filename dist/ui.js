@@ -9,6 +9,7 @@ const allBtn = document.getElementById("allBtn");
 const activeBtn = document.getElementById("activeBtn");
 const completedBtn = document.getElementById("completedBtn");
 let successTimeout;
+renderTasks();
 if (addBtn) {
     addBtn.addEventListener("click", () => {
         modal?.classList.remove("hidden");
@@ -24,16 +25,16 @@ if (allBtn) {
         renderTasks();
     });
 }
-//if(activeBtn){
-//    activeBtn.addEventListener("click", () => {
-//        renderTasks(filterTasks(false));
-//    });
-//}
-//if(completedBtn){
-//    completedBtn.addEventListener("click", () => {
-//        renderTasks(filterTasks(true));
-//    });
-//}
+if (activeBtn) {
+    activeBtn.addEventListener("click", () => {
+        renderTasks(taskManager.filterTasks(false));
+    });
+}
+if (completedBtn) {
+    completedBtn.addEventListener("click", () => {
+        renderTasks(taskManager.filterTasks(true));
+    });
+}
 if (saveBtn) {
     saveBtn.addEventListener("click", async () => {
         const titleInput = document.getElementById("taskTitle");
@@ -137,18 +138,18 @@ function createTaskElement(task) {
     li.append(info, actions, completeLabel);
     return li;
 }
-async function renderTasks(tasks = taskManager.getAllTasks()) {
+function renderTasks(tasks = taskManager.getAllTasks()) {
     if (!taskList)
         return;
     taskList.replaceChildren();
-    if ((await tasks).length === 0) {
+    if ((tasks).length === 0) {
         const emptyState = document.createElement("li");
         emptyState.className = "empty-state";
         emptyState.textContent = "No tasks yet. Add one to get started!";
         taskList.append(emptyState);
         return;
     }
-    for (const task of await tasks) {
+    for (const task of tasks) {
         taskList.append(createTaskElement(task));
     }
 }
@@ -162,5 +163,4 @@ function showSuccessMessage() {
         successMessage.classList.add("hidden");
     }, 2000);
 }
-renderTasks();
 //# sourceMappingURL=ui.js.map

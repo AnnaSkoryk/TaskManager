@@ -7,6 +7,14 @@
     {
       "id": "2",
       "title": "Build app"
+    },
+    {
+      "id": "l9_echvm75M",
+      "title": "New",
+      "description": "New",
+      "dueDate": "2026-06-26T00:00:00.000Z",
+      "priority": "medium",
+      "completed": false
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
