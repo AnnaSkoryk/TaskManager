@@ -1,20 +1,28 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Learn TypeScript"
-    },
-    {
       "id": "2",
-      "title": "Build app"
-    },
-    {
-      "id": "l9_echvm75M",
-      "title": "New",
-      "description": "New",
-      "dueDate": "2026-06-26T00:00:00.000Z",
+      "title": "Build app",
+      "description": "same text",
+      "dueDate": "2026-07-26T00:00:00.000Z",
       "priority": "medium",
       "completed": false
+    },
+    {
+      "id": "4QQ3ARySlg0",
+      "title": "Todays task",
+      "description": "new task",
+      "dueDate": "2026-06-28T00:00:00.000Z",
+      "priority": "medium",
+      "completed": true
+    },
+    {
+      "id": "0CF1VoGCbxI",
+      "title": "new",
+      "description": "new",
+      "dueDate": null,
+      "priority": "medium",
+      "completed": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

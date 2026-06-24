@@ -46,14 +46,14 @@ if(completedBtn){
 }
 
 if (saveBtn) {
-    saveBtn.addEventListener("click", async () => {
+    saveBtn.addEventListener("click", () => {
         const titleInput = document.getElementById("taskTitle") as HTMLInputElement;
         const descriptionInput = document.getElementById("taskDescription") as HTMLInputElement;
         const dueDateInput = document.getElementById("taskDueDate") as HTMLInputElement;
         const priorityInput = document.getElementById("taskPriority") as HTMLSelectElement;
 
         const newTask = {
-            id: (await taskManager.getAllTasks()).length,
+            id: taskManager.getAllTasks().length,
             title: titleInput.value,
             description: descriptionInput.value,
             dueDate: new Date(dueDateInput.value),
@@ -71,6 +71,7 @@ if (saveBtn) {
         showSuccessMessage();
     });
 }
+
 
 function formatDueDate(date: Date | string | null): string {
     if (typeof date === "string") {
@@ -103,7 +104,7 @@ function createTaskElement(task: Task): HTMLLIElement {
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
     checkbox.addEventListener("change", () => {
-        // setTaskCompleted(task.id, checkbox.checked);
+        taskManager.setTaskCompleted(task.id, checkbox.checked);
         li.classList.toggle("completed", checkbox.checked);
     });
 
@@ -148,16 +149,7 @@ function createTaskElement(task: Task): HTMLLIElement {
     removeBtn.type = "button";
     removeBtn.className = "btn-delete";
     removeBtn.textContent = "Remove";
-    //removeBtn.addEventListener("click", () => {
-    //    const task = document.querySelector("li");
-    //    if(task){
-    //        console.log(task);
-    //        removeTask(Number(task.getAttribute("id")));
-    //        renderTasks();
-    //   }
-    //});
     removeBtn.addEventListener("click", () => {
-        //removeTask(task.id);
         taskManager.deleteTask(task.id);
         renderTasks();
     });
@@ -183,10 +175,13 @@ function renderTasks(tasks: Task[] = taskManager.getAllTasks()): void {
 }
 
 function showSuccessMessage(): void {
-    if (!successMessage) return;
+    if (!successMessage) 
+        return;
     successMessage.classList.remove("hidden");
-    if (successTimeout) clearTimeout(successTimeout);
+    if (successTimeout) 
+        clearTimeout(successTimeout);
+    
     successTimeout = setTimeout(() => {
-        successMessage.classList.add("hidden");
+    successMessage.classList.add("hidden");
     }, 2000);
 }

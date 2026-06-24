@@ -36,13 +36,13 @@ if (completedBtn) {
     });
 }
 if (saveBtn) {
-    saveBtn.addEventListener("click", async () => {
+    saveBtn.addEventListener("click", () => {
         const titleInput = document.getElementById("taskTitle");
         const descriptionInput = document.getElementById("taskDescription");
         const dueDateInput = document.getElementById("taskDueDate");
         const priorityInput = document.getElementById("taskPriority");
         const newTask = {
-            id: (await taskManager.getAllTasks()).length,
+            id: taskManager.getAllTasks().length,
             title: titleInput.value,
             description: descriptionInput.value,
             dueDate: new Date(dueDateInput.value),
@@ -87,7 +87,7 @@ function createTaskElement(task) {
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
     checkbox.addEventListener("change", () => {
-        // setTaskCompleted(task.id, checkbox.checked);
+        taskManager.setTaskCompleted(task.id, checkbox.checked);
         li.classList.toggle("completed", checkbox.checked);
     });
     const completeText = document.createElement("span");
@@ -121,16 +121,7 @@ function createTaskElement(task) {
     removeBtn.type = "button";
     removeBtn.className = "btn-delete";
     removeBtn.textContent = "Remove";
-    //removeBtn.addEventListener("click", () => {
-    //    const task = document.querySelector("li");
-    //    if(task){
-    //        console.log(task);
-    //        removeTask(Number(task.getAttribute("id")));
-    //        renderTasks();
-    //   }
-    //});
     removeBtn.addEventListener("click", () => {
-        //removeTask(task.id);
         taskManager.deleteTask(task.id);
         renderTasks();
     });
