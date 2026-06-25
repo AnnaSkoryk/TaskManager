@@ -1,28 +1,52 @@
 {
   "tasks": [
     {
-      "id": "2",
-      "title": "Build app",
-      "description": "same text",
-      "dueDate": "2026-07-26T00:00:00.000Z",
+      "id": 1,
+      "title": "Create project structure",
+      "description": "Setup frontend, backend and tests folders",
+      "dueDate": "2026-06-30T00:00:00.000Z",
+      "priority": "high",
+      "completed": true
+    },
+    {
+      "id": 2,
+      "title": "Implement task creation",
+      "description": "Add functionality to create new tasks",
+      "dueDate": "2026-07-02T00:00:00.000Z",
+      "priority": "high",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "Add filtering system",
+      "description": "Implement Active / Completed / All filters",
+      "dueDate": "2026-07-05T00:00:00.000Z",
       "priority": "medium",
       "completed": false
     },
     {
-      "id": "4QQ3ARySlg0",
-      "title": "Todays task",
-      "description": "new task",
-      "dueDate": "2026-06-28T00:00:00.000Z",
+      "id": 4,
+      "title": "Fix UI bugs",
+      "description": "Resolve layout issues in task list",
+      "dueDate": null,
+      "priority": "low",
+      "completed": false
+    },
+    {
+      "id": 5,
+      "title": "Write API tests",
+      "description": "Cover JSON Server endpoints with tests",
+      "dueDate": "2026-07-01T00:00:00.000Z",
       "priority": "medium",
       "completed": true
     },
     {
-      "id": "0CF1VoGCbxI",
-      "title": "new",
-      "description": "new",
+      "id": 6,
+      "title": "Improve UX messages",
+      "description": "Add success and error notifications",
       "dueDate": null,
-      "priority": "medium",
-      "completed": true
+      "priority": "low",
+      "completed": false
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
